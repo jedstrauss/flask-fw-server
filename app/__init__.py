@@ -1,16 +1,15 @@
 import sys
+import os
 from flask import Flask, request
+from app.config import configure_app
 
-fw_path = ''
-fw_folder = 'static'
-br_path = fw_path + '/br/'
-br_folder = 'app/' + fw_folder + br_path
-app = Flask(__name__, static_url_path=fw_path, static_folder=fw_folder)
+app = Flask(__name__,instance_relative_config=True)
+configure_app(app)
 
-@app.route(br_path + '<filename>', methods=['PUT'])
+@app.route(app.config['BR_PATH'] + '/<path:filename>', methods=['PUT'])
 def br_put(filename):
     try:
-        with open(br_folder + filename, 'w+') as f:
+        with open(app.config['BR_FOLDER'] + filename, 'w+') as f:
             f.write(request.data)
     except:
         e = sys.exc_info()
