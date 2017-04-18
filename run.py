@@ -12,4 +12,5 @@ if (args.external):
 else:
     host = '127.0.0.1'
 
-app.run(host=host,port=args.port)
+if __name__ == "__main__":
+    app.run(host=host,port=args.port)
